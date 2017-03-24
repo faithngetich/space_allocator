@@ -13,18 +13,18 @@ class Amitytest(unittest.TestCase):
         # amity = Amity()
         self.amity.create_rooms('office', 'Krypton')
         all_rooms = len(self.amity.All_rooms)+1
-        self.assertEqual(len(self.amity.All_rooms), all_rooms, "office added succesfully")
+        self.assertEqual(len(self.amity.All_rooms), all_rooms, msg = "office added succesfully")
 
     def test_add_person(self):
         self.amity.add_person('dede','fellow')
         all_people = len(self.amity.All_people)+1
-        self.assertEqual(len(self.amity.All_people), all_people, "person added succesfully")
+        self.assertEqual(len(self.amity.All_people), all_people, msg = "person added succesfully")
         
     def test_person_added_is_fellow(self):
         self.amity.add_person('dede', 'fellow')
-        self.assertIn('dede', self.amity.All_fellows, "dede added as fellow")
+        self.assertIn('dede', self.amity.All_fellows, msg = "dede added as fellow")
         self.assertFalse('dede', Staff)
-        self.assertNotIn('dede', self.amity.All_staff, "dede is not staff")
+        self.assertNotIn('dede', self.amity.All_staff, msg = "dede is not staff")
     
     def test_fellow_wants_accomodation(self):
         self.amity.add_person('dede', 'fellow', 'wants_accomodation = Y')
@@ -40,18 +40,18 @@ class Amitytest(unittest.TestCase):
     
     def test_person_added_is_staff(self):
         self.amity.add_person('brian', 'staff')
-        self.assertIn('brian', self.amity.All_staff, "brian added as staff" )
+        self.assertIn('brian', self.amity.All_staff, msg = "brian added as staff" )
         self.assertFalse('brian', Fellow)
-        self.assertNotIn('brian', self.amity.All_fellows, "brian is not staff")
+        self.assertNotIn('brian', self.amity.All_fellows, msg = "brian is not staff")
 
     def test_Staff_gets_no_accomodation(self):
-        self.amity.add_person('luke', 'staff', 'wants_accomodation')
+        self.amity.add_person('luke', 'staff', msg = 'wants_accomodation')
         self.assertTrue('dede' in self.amity.No_accomodation_list)
 
     def test_if_room_is_livingspace(self):
         self.amity.create_rooms('livingspace', 'ruby')
         all_rooms = len(self.amity.All_rooms)+1
-        self.assertEqual(len(self.amity.All_rooms), all_rooms, "livingroom added succesfully")
+        self.assertEqual(len(self.amity.All_rooms), all_rooms, msg = "livingroom added succesfully")
 
     def test_reallocate_person(self):
         pass
