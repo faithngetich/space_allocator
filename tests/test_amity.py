@@ -15,11 +15,6 @@ class Amitytest(unittest.TestCase):
         all_fellows = len(self.amity.all_fellows) + 1
         self.assertEqual(len(self.amity.all_fellows), all_fellows, msg = "fellow not added")
 
-    def test_add_person_adds_staff_to_list(self):
-        self.amity.add_person('luke','staff')
-        all_staff(s) = len(self.amity.all_staff) + 1
-        self.assertEqual(len(self.amity.all_staff), all_staff(s), msg = "staff not added")
-        
     def test_person_added_is_fellow(self):
         self.amity.add_person('dede', 'fellow')
         self.assertIn('dede', self.amity.all_fellows, msg = "person not  added as fellow")
