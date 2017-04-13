@@ -28,6 +28,6 @@ class Fellow(Person):
         super(Fellow, self).__init__(first_name, last_name)
 
     def __str__(self):
-        """To make Staff class human readable."""
+        """To make fellow class human readable."""
         return "{} {}".format(self.first_name, self.last_name)
 
