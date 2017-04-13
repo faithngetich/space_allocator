@@ -16,7 +16,7 @@ class Amity(object):
         self.accomodation_list = []
         self.allocated_rooms = {}
 
-    def create_room(self, room):        
+    def create_room(self, list_of_rooms, room_type):        
         if room["room_type"] == "office":
             for rooms in self.offices:
                 if room["room_name"] == rooms["room_name"]:
