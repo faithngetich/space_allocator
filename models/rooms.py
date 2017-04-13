@@ -5,7 +5,8 @@ class Room(object):
 
 class Office(Room):
 
-    room_type = "office" 
+    room_type = "office"
+    room_capacity = 6 
 
     def __init__(self, room_name):
         """Override the init method of Person superclass."""
@@ -15,9 +16,10 @@ class Office(Room):
         """To make office class human readable."""
         return "{}".format(self.room_name)
 
-class Living_space(Room):
+class LivingSpace(Room):
     
     room_type = "living_space" 
+    room_capacity = 4
 
     def __init__(self, room_name):
         """Override the init method of Person superclass."""
@@ -27,5 +29,3 @@ class Living_space(Room):
         """To make living space class human readable."""
         return "{}".format(self.room_name)
 
-space = Living_space("Ruby")
-print(space.room_id, space.room_name, space.room_type) 
