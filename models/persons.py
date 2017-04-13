@@ -31,5 +31,3 @@ class Fellow(Person):
         """To make Staff class human readable."""
         return "{} {}".format(self.first_name, self.last_name)
 
-staff = Fellow("Daniel", "Maina")
-print(staff)

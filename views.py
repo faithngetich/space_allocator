@@ -20,7 +20,7 @@ class Amity(object):
         if room["room_type"] == "office":
             for rooms in self.offices:
                 if room["room_name"] == rooms["room_name"]:
-                    print( "\n" + rooms.room_name.upper()+"already exists. \n")
+                    print( "\n" + rooms.room_name.upper() + "already exists. \n")
                     return
                 else:
                     new_office = OfficeSpace(room["room_name"])
