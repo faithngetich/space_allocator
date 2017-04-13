@@ -17,3 +17,19 @@ class Staff(Person):
     def __str__(self):
         """To make Staff class human readable."""
         return "{} {}".format(self.first_name, self.last_name)
+
+class Fellow(Person):
+    
+    wants_accomodation = "N"
+    category = "fellow"
+
+    def __init__(self, first_name, last_name):
+        """Override the init method of Person superclass."""
+        super(Fellow, self).__init__(first_name, last_name)
+
+    def __str__(self):
+        """To make Staff class human readable."""
+        return "{} {}".format(self.first_name, self.last_name)
+
+staff = Fellow("Daniel", "Maina")
+print(staff)
