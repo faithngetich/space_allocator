@@ -1,13 +1,15 @@
 import unittest
-from ..views import Amity
+from views import Amity
+from models.rooms import Office
+from models.rooms import LivingSpace
 class Amitytest(unittest.TestCase):
     
     def setUp(self):
         self.amity = Amity()
     
     def test_create_room_adds_room_succesfully(self):
-        self.amity.create_room('office', 'Krypton')
-        self.assertIn('Krypton', self.amity.offices)
+        self.amity.create_room('O', 'Krypton')
+        self.assertIn('KRYPTON', self.amity.office_spaces)
 
     # def test_add_person_adds_fellow_to_list(self):
     #     self.amity.add_person('dede','fellow')

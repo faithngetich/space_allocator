@@ -25,36 +25,41 @@ class Amity(object):
                 Amity.living_spaces[room_name.upper()] = []
             print(room_name.upper() + "created successfully")
 
-space = Amity()
-space.create_room('O', 'valahala') 
-print(Amity.all_rooms)
+    # def add_person(self, first_name, last_name, category, wants_accomodation='N'):
+    #     """Adds person to Amity and randomly allocates the person"""
+    #     allocated_office = self.generate_room()
+    #     mapping = {'F': Fellow, 'S':Staff}
+    #     new_person = mapping[category.upper()], (person_id, first_name.upper(), last_name.upper(),)
+
+
+
 
 # create = Amity()            
 # amity = create.create_room("office", "tet")
 # print(amity.room_type,amity.room_name)
     
        
-    # def add_person(self, person):
-    #     pass
+    def add_person(self, person):
+        pass
 
-    # def reallocate_person(self, person_id, new_room_name):
-    #     pass
+    def reallocate_person(self, person_id, new_room_name):
+        pass
     
-    # def print_allocations(self):
-    #     pass
+    def print_allocations(self):
+        pass
     
-    # def print_unallocated(self):
-    #     pass
+    def print_unallocated(self):
+        pass
     
-    # def print_room(self, room_name):
-    #     pass
+    def print_room(self, room_name):
+        pass
 
-    # def save_state(self):
-    #     pass
+    def save_state(self):
+        pass
     
-    # def load_state(self):
-    #     pass
+    def load_state(self):
+        pass
 
-    # def load_people(self, filename):
-    #     pass
+    def load_people(self, filename):
+        pass
 
