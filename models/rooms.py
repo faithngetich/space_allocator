@@ -23,7 +23,7 @@ class LivingSpace(Room):
 
     def __init__(self, room_name):
         """Override the init method of Person superclass."""
-        super(Living_space, self).__init__(room_name)
+        super(LivingSpace, self).__init__(room_name)
 
     def __str__(self):
         """To make living space class human readable."""

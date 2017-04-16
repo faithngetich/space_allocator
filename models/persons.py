@@ -31,3 +31,6 @@ class Fellow(Person):
         """To make fellow class human readable."""
         return "{} {}".format(self.first_name, self.last_name)
 
+
+space = Living_space("Ruby")
+print(space.room_id, space.room_name, space.room_type, space.room_capacity) 
