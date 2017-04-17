@@ -6,11 +6,13 @@ class Room(object):
 class Office(Room):
 
     room_type = "office"
-    room_capacity = 6 
+    room_capacity = 6
 
     def __init__(self, room_name):
         """Override the init method of Person superclass."""
         super(Office, self).__init__(room_name)
+        
+        self.members = []
 
     def __str__(self):
         """To make office class human readable."""
@@ -24,6 +26,8 @@ class LivingSpace(Room):
     def __init__(self, room_name):
         """Override the init method of Person superclass."""
         super(LivingSpace, self).__init__(room_name)
+
+        self.members = []
 
     def __str__(self):
         """To make living space class human readable."""

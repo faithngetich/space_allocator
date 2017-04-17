@@ -11,10 +11,10 @@ class Amitytest(unittest.TestCase):
         self.amity.create_room('O', 'Krypton')
         self.assertIn('KRYPTON', self.amity.office_spaces)
 
-    # def test_add_person_adds_fellow_to_list(self):
-    #     self.amity.add_person('dede','fellow')
-    #     all_fellows = len(self.amity.all_fellows) + 1
-    #     self.assertEqual(len(self.amity.all_fellows), all_fellows, msg = "fellow not added")
+    def test_add_person_adds_fellow_to_list(self):
+        self.amity.add_person('dede','faith','F')
+        all_fellows = len(self.amity.all_fellows) + 1
+        self.assertEqual(len(self.amity.all_fellows), all_fellows, msg = "fellow not added")
 
     # def test_person_added_is_fellow(self):
     #     self.amity.add_person('dede', 'fellow')
