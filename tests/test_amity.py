@@ -10,20 +10,34 @@ class Amitytest(unittest.TestCase):
     def test_create_room_adds_room_succesfully(self):
         self.amity.create_room('O', 'Krypton')
         self.assertIn('KRYPTON', self.amity.office_spaces)
+        
 
-    def test_add_person_adds_fellow_to_list(self):
-        self.amity.add_person('dede','faith','F')
-        all_fellows = len(self.amity.all_fellows) + 1
-        self.assertEqual(len(self.amity.all_fellows), all_fellows, msg = "fellow not added")
+    # def test_add_person_adds_fellow_to_list(self):
+    #     self.amity.add_person('dede','faith','F','N')
+    #     all_fellows = len(self.amity.all_fellows) + 1
+    #     self.assertEqual(len(self.amity.all_fellows), all_fellows, msg = "fellow not added")
 
     # def test_person_added_is_fellow(self):
-    #     self.amity.add_person('dede', 'fellow')
-    #     self.assertIn('dede', self.amity.all_fellows, msg = "person not  added as fellow")
-    #     self.assertFalse('dede', 'Staff')
-    #     self.assertNotIn('dede', self.amity.all_staff, msg = "dede is not staff")
+    #     length = len(self.amity.all_fellows)
+    #     self.amity.add_person('dede', 'F', 'y')
+    #     new_length = len(self.amity.all_fellows)
+    #     self.assertEqual((length + 1), new_length)
+
+
+    def test_reallocate_person(self):
+        length = len(self.amity.all_fellows)
+        self.amity.add_person('dede', 'F', 'y')
+        new_length = len(self.amity.all_fellows)
+        self.assertEqual((length + 1), new_length)
+
+        self.amity.create_room('O', 'valhalla')
+        self.amity.reallocate_person('dede', 'fat', 'O', 'valhalla')
+        self.assertIn('DEDE', 'FAT', self.amity.allocated_rooms['VALHALLA'])
+
+
 
     # def test_person_added_is_staff(self):
-    #     self.amity.add_person('dede', 'staff')
+    #     self.amity.add_person('dede', 'S')
     #     self.assertIn('dede', self.amity.all_fellows, msg = "person not  added as fellow")
     #     self.assertFalse('dede', 'Staff')
     #     self.assertNotIn('dede', self.amity.all_staff, msg = "dede is not staff")
@@ -62,13 +76,7 @@ class Amitytest(unittest.TestCase):
     #     offices1 = len(self.amity.offices) + 1
     #     self.assertEqual(len(self.amity.offices), offices1, msg = "livingroom is not added succesfully")
 
-    # def test_reallocate_person(self):
-    #     self.amity.create_room('office', 'oculus')
-    #     self.amity.add_person('dede', 'staff', 'N')
-    #     self.amity.create_room('office', 'valhalla')
-    #     self.amity.reallocate_person('dede', 'valhalla')
-    #     self.assertIn('dede', self.amity.allocated_rooms['valhalla'])
-
+   
     # def test_print_allocations_returns_all_allocated_names(self):
     #     self.amity.add_person('dede', 'fellow')
     #     allocated_names = len(self.amity.allocated_rooms) + 1
