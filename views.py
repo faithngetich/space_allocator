@@ -114,29 +114,12 @@ class Amity(object):
                             Amity.office_spaces[new_room.upper()].append(full_name)
                             print("successfully reallocated")
 
+    def load_people(self, filename):
+        """loads people from a txt file to the app"""
+        with open (filename, 'r') as people_file:
+            for person_details in people_file:
+                details = person_details.rstrip().split()
+                accomodate = details[3] if len(details) == 4 else "N"
+                self.add_person(details[0], details[1], details[2], accomodate)
+                print("Successfully loaded people")
 
-space = Amity()
-space.create_room('L', "MyRoom")
-space.create_room('O', 'valhala')
-space.add_person('faith', 'dede', 'F', 'Y')
-
-space.reallocate_person('faith', 'dede', 'L', 'valhala')
-print(Amity.living_spaces)
-print(Amity.office_spaces)
-print(space.reallocate_person('faith', 'dede', 'L', 'valhala'))
-print(Amity.living_spaces)
-print(Amity.all_rooms)
-
-#     def load_people(filename):
-#         """loads people from a txt file to the app"""
-#         with open (filename, 'r') as people_file:
-#             for person_details in people_file:
-#                 details = person_details.rstrip().split()
-#                 accomodate = details[3] if len(details) == 4 else "N"
-#                 Amity.add_person(details[0], details[1], details[2], accomodate)
-#                 print("Successfully loaded people")
-
-# space = Amity()
-# space.add_person('faith', 'dede', 'F', 'Y')
-# space.load_people('faith')
-# print(Amity.living_spaces)
