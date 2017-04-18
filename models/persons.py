@@ -20,6 +20,9 @@ class Staff(Person):
         """To make Staff class human readable."""
         return "{} {}".format(self.first_name, self.last_name)
 
+    def __repr__(self):
+        return 'first_name:{}, last_name:{}'.format(self.first_name,self.last_name)
+
 class Fellow(Person):
     
     wants_accomodation = "N"
