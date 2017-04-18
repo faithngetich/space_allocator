@@ -5,7 +5,7 @@ class Room(object):
 
 class Office(Room):
 
-    room_type = "office"
+    room_type = "OFFICE"
     room_capacity = 6
 
     def __init__(self, room_name):
@@ -20,7 +20,7 @@ class Office(Room):
 
 class LivingSpace(Room):
     
-    room_type = "living_space" 
+    room_type = "LIVING_SPACE" 
     room_capacity = 4
 
     def __init__(self, room_name):

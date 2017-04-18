@@ -4,11 +4,13 @@ class Person(object):
         self.first_name = first_name
         self.last_name = last_name
         self.wants_accomodation = 'N'
-
+    @property
+    def full_name(self):
+       return self.first_name + " " + self.last_name
 class Staff(Person):
 
     wants_accomodation = "N"
-    category = "staff"
+    category = "STAFF"
 
     def __init__(self, first_name, last_name):
         """Override the init method of Person superclass."""
@@ -21,7 +23,7 @@ class Staff(Person):
 class Fellow(Person):
     
     wants_accomodation = "N"
-    category = "fellow"
+    category = "FELLOW"
 
     def __init__(self, first_name, last_name):
         """Override the init method of Person superclass."""
