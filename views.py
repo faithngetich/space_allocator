@@ -14,7 +14,7 @@ class Amity(object):
     office_allocations = {}
     living_space_allocations = {}
     all_people = []
-    living_spaces = {'' : []}
+    living_spaces = {'None' : []}
     office_spaces = {'None' : []}
     accomodation_list = []
     allocated_rooms = {}
@@ -56,7 +56,7 @@ class Amity(object):
         livingSpaces = [room for room in self.all_rooms if room.room_type == "LIVING_SPACE"]
         available_living_space = []
         for living_space in livingSpaces:
-            if living_space.room_capacity > len(self.living_spaces[living_space.room_name]):
+            if living_space.room_capacity > len(self.living_spaces[living_space.room_name.upper()]):
                 available_living_space.append(living_space.room_name)
         if len(available_living_space):
             selected_room = random.choice(available_living_space)
@@ -82,7 +82,7 @@ class Amity(object):
             if allocated_living_space is None:
                 print("No available living spaces")
             else:
-                self.living_spaces[allocated_living_space].append(new_person.full_name)
+                self.living_spaces[allocated_living_space.upper()].append(new_person.full_name)
                 print(new_person.full_name + " added successfully to " + allocated_living_space)
         print("Adding process completed succesfully")
 
@@ -129,6 +129,7 @@ class Amity(object):
 
     @staticmethod
     def print_allocations(file_name=None):
+        """Prints a list of allocations onto the screen"""
         print("=" * 30 + "\n" + "Office Allocations\n" + "=" *30)
         for room in Amity.office_spaces.keys():
             if room != "None":
@@ -157,4 +158,44 @@ class Amity(object):
                         nfile.write(person)
             print("%s.txt written" % file)
     
+    @staticmethod
+    def print_unallocated(file_name=None):
+        """Prints all people not allocated"""
+        unallocated_offices = Amity.office_spaces["None"]
+        unallocated_living_spaces = Amity.living_spaces["None"]
+        print("=" * 30 + "\n" + "No offices\n" + "=" * 30)
+        for person in unallocated_offices:
+            print(person or "None")
+        print("=" * 30 + "\n" + "Living Spaces\n" + "=" * 30)
+        for person in unallocated_living_spaces:
+            print(person or "None")
+
+        if file_name:
+            file = open(file_name + ".txt", "a")
+            file.write("=" * 30 + "\n" + "No offices\n" + "=" * 30)
+            for person in unallocated_offices:
+                file.write("\n" + person or "None")
+            file.write("=" * 30 + "\n" + "No living spaces\n" + "=" * 30)
+            for person in unallocated_living_spaces:
+                file.write("\n" + person or "None")
+            print("%s.txt written succesfully", file_name)
+
+    @staticmethod
+    def print_room(room_name):
+        """ Prints the names of all the people in room_name on the
+             screen."""
+        offices = [room for room in Amity.office_spaces if room != "None"]
+        living_spaces = [room for room in Amity.living_spaces if room != "None"]
+        if room_name.upper() not in offices and room_name.upper() not in living_spaces:
+            print("sorry! the room does not exist")
+        else:
+            print("=" * 30 + "\n Members \n" + "=" * 30)
+            if room_name.upper() in offices:
+                for person in Amity.office_spaces[room_name.upper()]:
+                    print(person)
+            elif room_name.upper() in living_spaces:
+                for person in Amity.living_spaces[room_name.upper()]:
+                    print(person)
+            
     
+   
