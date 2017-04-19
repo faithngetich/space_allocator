@@ -1,9 +1,4 @@
-JONATHAN NGONDI S 
-AHMED YUSUB F 
-EPRAHIM KIMANI F 
-FAITH DEDE S 
-
-# mapping = {'O': Office, 'L': LivingSpace}
-                # new_room = mapping[room_type.upper()](room_name.upper())
-                
-#print(room_name.upper() + " " + "created successfully")
+JONATHAN NGONDI S O
+AHMED YUSUB F O
+EPRAHIM KIMANI F L
+FAITH DEDE S O

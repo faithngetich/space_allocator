@@ -126,5 +126,35 @@ class Amity(object):
                 accomodate = details[3] if len(details) == 4 else "N"
                 self.add_person(details[0], details[1], details[2], accomodate)
                 print("Successfully loaded people")
+
+    @staticmethod
+    def print_allocations(file_name=None):
+        print("=" * 30 + "\n" + "Office Allocations\n" + "=" *30)
+        for room in Amity.office_spaces.keys():
+            if room != "None":
+                print (room + "\n" + "+" * 30)
+                for person in Amity.office_spaces[room]:
+                    print(person)
+        print("=" * 30 + "\n" + "Living spaces Allocations\n" + "=" *30)
+        for room in Amity.living_spaces.keys():
+            if room != "None":
+                print (room + "\n" + "+" * 30)
+                for person in Amity.living_spaces[room]:
+                    print(person)
+        if file_name:
+            nfile = open(file_name + ".txt", "a")
+            nfile.write("=" * 30 + "\n" + "Office Allocations\n" + "=" *30)
+            for room in Amity.office_spaces[room]:
+                if room != "None":
+                    nfile.write(room + "\n" + "+" * 30)
+                    for person in Amity.office_spaces[room]:
+                        nfile.write(person)
+            nfile.write("=" *30 + "\n" + "Living space Allocations\n" + "=" * 30 )
+            for room in Amity.living_spaces[room]:
+                if room != "None":
+                    nfile.write(room + "\n" + "+" * 30)
+                    for person in Amity.living_spaces[room]:
+                        nfile.write(person)
+            print("%s.txt written" % file)
     
     
