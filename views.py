@@ -177,54 +177,33 @@ class Amity(object):
             return "Person not allocated to room"
                 
     def reallocate_person(self, person_id, new_room_name):
-        """ moves person from one room to another room"""
-        person_object = self.get_person(person_id)
-        if person_object == "Invalid person id":
-            # prints id does not exist
-            print(person_object)
-            return person_object
-        elif person_object == "There are no people in the system.":
-            print("There are no people in the system. Add person(s) first, then reallocate")
-            return person_object
+        full_name = first_name.upper() + " " + last_name.upper()
+        fellows = [person.full_name for person in self.all_people if person.category == "FELLOW"]
+        staff = [person.full_name for person in self.all_people if person.category == "STAFF"]
+        available_living_spaces = ([room.room_name for room in self.all_rooms if room.room_type == "LIVING_SPACE" and len(self.living_space_allocations[room.room_name]) < LivingSpace.room_capacity])
+        available_offices = [room.room_name for room in self.all_rooms
+                            if room.room_type == "OFFICE"
+                            and len(self.office_allocations[room.room_name]) < Office.room_capacity]
+        if full_name not in fellows and full_name not in staff:
+            print("Sorry, the person doesn't exist.")
+
+        elif new_room.upper() not in available_living_spaces and new_room.upper() not in available_offices:
+            print("The room requested does not exist or is not available")
+            print("Available office \n", available_offices)
+            print("Available living space \n", available_living_spaces)
         else:
-            new_room_object = self.get_room(new_room_name)
-            if new_room_object == "Room name does not exist":
-                return "Room name does not exist"
-            elif new_room_object == "There are no rooms available":
-                return "There are no rooms available"
-            # else:
-            #     if new_room_object.room_type == "LIVING_SPACE":
-                    
-            #     current_room = 
-
-
-        # full_name = first_name.upper() + " " + last_name.upper()
-        # fellows = [person.full_name for person in self.all_people if person.category == "FELLOW"]
-        # staff = [person.full_name for person in self.all_people if person.category == "STAFF"]
-        # available_living_spaces = ([room.room_name for room in self.all_rooms if room.room_type == "LIVING_SPACE" and len(self.living_space_allocations[room.room_name]) < LivingSpace.room_capacity])
-        # available_offices = [room.room_name for room in self.all_rooms
-        #                     if room.room_type == "OFFICE"
-        #                     and len(self.office_allocations[room.room_name]) < Office.room_capacity]
-        # if full_name not in fellows and full_name not in staff:
-        #     print("Sorry, the person doesn't exist.")
-
-        # elif new_room.upper() not in available_living_spaces and new_room.upper() not in available_offices:
-        #     print("The room requested does not exist or is not available")
-        #     print("Available office \n", available_offices)
-        #     print("Available living space \n", available_living_spaces)
-        # else:
-        #     if room_type.upper() == "L":
-        #         if new_room in available_offices and new_room not in available_living_spaces:
-        #             print("The room selected is not a living space")
-        #         elif full_name not in fellows:
-        #             return "The person has to exist and be a fellow!"
-        #         else:
-        #             for room in self.living_space_allocations.keys():
-        #                 if full_name in self.living_space_allocations[room]:
-        #                     lspace = self.living_space_allocations[room]
-        #                     lspace.remove(full_name)
-        #                     self.office_allocations[new_room.upper()].append(full_name)
-        #                     print("successfully reallocated")
+            if room_type.upper() == "L":
+                if new_room in available_offices and new_room not in available_living_spaces:
+                    print("The room selected is not a living space")
+                elif full_name not in fellows:
+                    return "The person has to exist and be a fellow!"
+                else:
+                    for room in self.living_space_allocations.keys():
+                        if full_name in self.living_space_allocations[room]:
+                            lspace = self.living_space_allocations[room]
+                            lspace.remove(full_name)
+                            self.office_allocations[new_room.upper()].append(full_name)
+                            print("successfully reallocated")
 
     def load_people(self, filename):
         """loads people from a txt file to the app"""
@@ -344,33 +323,5 @@ class Amity(object):
         self.session.add_all(people)
         self.session.commit()
 
-space = Amity()
-# # space.create_room('O', ["MyRoom"])
-# space.create_room('O', ['VaLhAla'])
-# space.create_room('O', ['valhala'])
-# space.create_room('L', ['Ruby','Narnia'])
 
-# space.add_person('faith', 'dede', 'F', 'Y')
-
-
-# space.reallocate_person('faith', 'dede', 'L', 'valhala')
-# print(Amity.living_spaces)
-# print(Amity.office_spaces)
-# print(space.reallocate_person('faith', 'dede', 'L', 'valhala'))
-# print(Amity.living_spaces)
-# print(Amity.all_rooms)
-# space = Amity()
-# space.add_person('faith', 'dede', 'F', 'Y')
-
-# *******************
-
-# space.load_people("people.txt")
-space.save_state("faha")
-# space.print_allocations()
-# space.print_unallocated()
-# space.print_room('elda')
-
-# *******************
-
-# print(Amity.living_spaces)
 
