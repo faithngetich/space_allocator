@@ -65,13 +65,18 @@ class AmitySystem(cmd.Cmd):
 
     @docopt_cmd
     def do_create_room(self, args):
-        """Usage: create_room (<room_name> <room_type>)..."""
+        """Usage: create_room (O|L) <room_name>..."""
 
-        rooms = args["<room_name>"]
-        types = args["<room_type>"]
-        for room in rooms:
-            r_type = types[rooms.index(room)]
-            amity.create_room(room, r_type)
+        # rooms = args["<room_name>"]
+        # types = args["<room_type>"]
+        # for room in rooms:
+        #     r_type = types[rooms.index(room)]
+        if args["O"]:
+            room_type = "O"
+        else:
+            room_type = "L"
+
+        amity.create_room(room_type, args["<room_name>"])
 
     @docopt_cmd
     def do_add_person(self, args):
@@ -134,26 +139,7 @@ class AmitySystem(cmd.Cmd):
         print('Thank you for using Amity. Adios!')
         exit()
     
-    @docopt_cmd
-    def do_save_state(self, args):
-        """
-        Usage: save_state [--database=<sqlite_database>]
-        Options:
-        -d, --database=<sqlite_database>  Save state to specified database [default: amity_db]    
-        """
-
-        db_name = args["--database"]
-        amity.save_state(db_name)
-
-    @docopt_cmd
-    def do_load_state(self, args):
-        """
-        Usage: load_state [--load=<database>]
-        Options:
-        -l, --load=<database>  Load data from specified database [default: amity_db]
-        """
-        amity.load_state(args["--load"])
-
+    
 
 opt = docopt(__doc__, sys.argv[1:])
 
