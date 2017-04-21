@@ -3,6 +3,10 @@ class Room(object):
         self.room_id = id(self)
         self.room_name = room_name
 
+    def __str__(self):
+        """To make the class human readable."""
+        return "{}".format(self.room_name.upper())
+
 class Office(Room):
 
     room_type = "OFFICE"
@@ -13,10 +17,6 @@ class Office(Room):
         super(Office, self).__init__(room_name)
         
         self.members = []
-
-    def __str__(self):
-        """To make office class human readable."""
-        return "{}".format(self.room_name)
 
 class LivingSpace(Room):
     
@@ -29,7 +29,4 @@ class LivingSpace(Room):
 
         self.members = []
 
-    def __str__(self):
-        """To make living space class human readable."""
-        return "{}".format(self.room_name)
-
+    

@@ -23,6 +23,7 @@ class Amity(object):
     office_spaces_waiting_list = []
     
     def create_room(self, room_type, list_of_rooms):
+        
         """creates a specified room"""
         for name in  list_of_rooms:
             if name.upper() in [room.room_name.upper() for room in self.all_rooms]:
@@ -31,20 +32,22 @@ class Amity(object):
                 if room_type.upper() == 'O':
                     office = Office(name)
                     self.all_rooms.append(office)
-                    self.office_allocations[office] = []
+                    self.office_allocations[office.room_name] = []
                     print(Fore.GREEN + "Office {} successfully created.".format(office.room_name.upper()))
                 elif room_type.upper() == 'L':
                     living_space = LivingSpace(name)
                     self.all_rooms.append(living_space)
-                    self.living_space_allocations[living_space] = []
+                    self.living_space_allocations[living_space.room_name] = []
                     print(Fore.GREEN + "Living space {} successfully created.".format(living_space.room_name.upper()))
+                else:
+                    print("please specify the room_type")
 
     def generate_random_office_spaces(self):
         """Generates random office"""
         offices = [room for room in self.all_rooms if room.room_type == "OFFICE"]
         available_offices = []
         for office in offices:
-            if len(self.office_allocations[office]) < 6:
+            if len(self.office_allocations[office.room_name]) < 6:
                 available_offices.append(office)
         if available_offices:
             selected_room = random.choice(available_offices)
@@ -57,7 +60,7 @@ class Amity(object):
         living_spaces = [room for room in self.all_rooms if room.room_type == "LIVING_SPACE"]
         available_living_space = []
         for living_space in living_spaces:
-            if len(self.living_space_allocations[living_space]) < 6:
+            if len(self.living_space_allocations[living_space.room_name]) < 6:
                 available_living_space.append(living_space)
         if available_living_space:
             selected_room = random.choice(available_living_space)
@@ -68,32 +71,39 @@ class Amity(object):
     def add_person(self, first_name, last_name, category, wants_accomodation='N'):
         """Adds person to self and randomly allocates the person"""
         # check if category is FELLOW
-        if wants_accomodation == "N":
+        # if category is "S" and wants_accomodation is "Y"
+
+        if wants_accomodation == "N" or (category is "S" and wants_accomodation is "Y"):
             if category is "F":
                 # create fellow object and adds them to fellow list
-                fellow = Fellow(first_name, last_name)
+                fellow = Fellow(first_name, last_name, wants_accomodation)
                 self.all_people.append(fellow)
                 self.all_fellows.append(fellow)
                 allocated_office = self.generate_random_office_spaces()
                 print(fellow.person_id)
                 if allocated_office:
+                    allocated_office.members.append(fellow)
                     # if random room selected
-                    Amity.office_allocations[allocated_office].append(fellow)
-                    
+                    Amity.office_allocations[allocated_office.room_name] = allocated_office.members
+
+                    # Amity.office_allocations[allocated_office.room_name] = allocated_office.members
+
                     print(Fore.GREEN +"You have allocated {} successfully to {}".format(fellow.first_name,allocated_office.room_name))
                 else:
                     Amity.office_spaces_waiting_list.append(fellow)
                     print("Sorry, no space available {} has been added to the waiting list".format(fellow.first_name))
             else:
                 # create staff object and adds them to list
-                staff = Staff(first_name, last_name)
+                staff = Staff(first_name, last_name, wants_accomodation)
                 Amity.all_staff.append(staff)
                 Amity.all_people.append(staff)
                 allocated_office = self.generate_random_office_spaces()
+                print(staff.person_id)
                 if allocated_office:
+                    allocated_office.members.append(staff)
                     # if random room selected
-                    Amity.office_allocations[allocated_office].append(staff)
-                    print("You have allocated {} successfully ".format(staff.first_name))
+                    Amity.office_allocations[allocated_office.room_name] = allocated_office.members
+                    print(Fore.GREEN+"You have allocated {} successfully ".format(staff.first_name))
                 else:
                     Amity.office_spaces_waiting_list.append(staff)
                     print(Fore.RED+"Sorry, no space available {} has been added to the waiting list".format(staff.first_name))
@@ -101,14 +111,15 @@ class Amity(object):
             # if wants accomodation
             if category is "F":
                 # create fellow object
-                fellow = Fellow(first_name, last_name)
+                fellow = Fellow(first_name, last_name, wants_accomodation)
                 Amity.all_people.append(fellow)
                 Amity.all_fellows.append(fellow)
                 allocated_office = self.generate_random_office_spaces()
                 if allocated_office:
                     # if random room selected
-                    Amity.office_allocations[allocated_office].append(fellow)
-                    print("You have allocated {} successfully to {}".format(fellow.first_name,office_allocations.room_name))
+                    allocated_office.members.append(fellow)
+                    Amity.office_allocations[allocated_office.room_name] = allocated_office.members
+                    print(Fore.GREEN+"You have allocated {} successfully to {}".format(fellow.first_name,allocated_office.room_name))
                 else:
                     Amity.office_spaces_waiting_list.append(fellow)
                     print(Fore.RED+"Sorry, no space available {} has been added to the waiting list".format(fellow.first_name))
@@ -116,27 +127,13 @@ class Amity(object):
                 # add living space
                 allocated_living_space = self.generate_random_living_spaces()
                 if allocated_living_space:
-                    Amity.living_space_allocations[allocated_living_space].append(fellow)
-                    print("You have allocated {} successfully to living space {} ".format(fellow.first_name, allocated_living_space.room_name))
+                    allocated_living_space.members.append(fellow)
+                    Amity.living_space_allocations[allocated_living_space.room_name] = allocated_living_space.members
+                    print(Fore.GREEN+"You have allocated {} successfully to living space {} ".format(fellow.first_name, allocated_living_space.room_name))
                 else:
                     Amity.living_spaces_waiting_list.append(fellow)
                     print(Fore.RED+"Sorry, no space available {} has been added to the waiting list".format(fellow.first_name))
-            else:
-                staff = Staff(first_name, last_name)
-                Amity.all_people.append(staff)
-                Amity.all_staff.append(staff)
-                allocated_office = self.generate_random_office_spaces()
-                if allocated_office:
-                    # if random room selected
-                    Amity.office_allocations[allocated_office].append(staff)
-                    print("You have allocated {} successfully ".format(staff.first_name))
-                    # reject adding staff to living space
-                else:
-                    Amity.office_spaces_waiting_list.append(staff)
-                    print(Fore.RED+"Sorry, no space available {} has been added to the waiting list".format(staff.first_name))
-
-                
-                print(Fore.RED+ "Staff not entitled to living space")
+            
 
     def get_person(self, person_id):
         """To return person object given person id."""
@@ -238,40 +235,37 @@ class Amity(object):
     @staticmethod
     def print_allocations(file_name=None):
         """Prints a list of allocations onto the screen"""
-        print("=" * 30 + "\n" + "Office Allocations\n" + "=" *30)
+        print(Fore.MAGENTA + "=" * 30 + "\n" + "Office Allocations\n" + "=" *30)
         for room in Amity.office_allocations.keys():
             if room != "None":
-                print ("room" + "\n" + "+" * 30)
+                print (Fore.BLUE + room.upper() + "\n")
                 for person in Amity.office_allocations[room]:
                     print(person)
-        print("=" * 30 + "\n" + "Living spaces Allocations\n" + "=" *30)
+        print(Fore.MAGENTA + "=" * 30 + "\n" + "Living spaces Allocations\n" + "=" *30)
         for room in Amity.living_space_allocations.keys():
             if room != "None":
-                print ("room" + "\n" + "+" * 30)
+                print (Fore.BLUE +room.upper() + "\n" + "+" * 30)
                 for person in Amity.living_space_allocations[room]:
                     print(person)
         if file_name:
             nfile = open(file_name + ".txt", "a")
-            nfile.write("=" * 30 + "\n" + "Office Allocations\n" + "=" *30)
-            for room in Amity.office_allocations[room]:
+            for room in Amity.office_allocations.keys():
                 if room != "None":
-                    nfile.write(room + "\n" + "+" * 30)
+                    nfile.write("\n"+ room.upper() + "\n"+ "-" *30+ "\n")
                     for person in Amity.office_allocations[room]:
-                        nfile.write(person)
-            nfile.write("=" *30 + "\n" + "Living space Allocations\n" + "=" * 30 )
-            for room in Amity.living_space_allocations[room]:
+                        nfile.write(person.full_name.upper()+"\n")
+            for room in Amity.living_space_allocations.keys():
                 if room != "None":
-                    nfile.write(room + "\n" + "+" * 30)
+                    nfile.write("\n" + room.upper() + "\n" + "-" * 30+ "\n")
                     for person in Amity.living_space_allocations[room]:
-                        nfile.write(person)
-            print("%s.txt written" % file)
+                        nfile.write(person.full_name.upper()+"\n")
+            print("%s.txt written" % file_name)
     
     @staticmethod
     def print_unallocated(file_name=None):
         """Prints all people not allocated"""
-        unallocated_offices = Amity.office_allocations["None"]
-        unallocated_living_spaces = Amity.living_space_allocations["None"]
-        print("=" * 30 + "\n" + "No offices\n" + "=" * 30)
+        unallocated_offices = Amity.office_spaces_waiting_list
+        unallocated_living_spaces = Amity.living_spaces_waiting_list
         for person in unallocated_offices:
             print(person or "None")
         print("=" * 30 + "\n" + "Living Spaces\n" + "=" * 30)
@@ -280,12 +274,11 @@ class Amity(object):
 
         if file_name:
             file = open(file_name + ".txt", "a")
-            file.write("=" * 30 + "\n" + "No offices\n" + "=" * 30)
+            file.write("=" * 30 + "\n" + "Unallocated people\n" + "=" * 30)
             for person in unallocated_offices:
-                file.write("\n" + person or "None")
-            file.write("=" * 30 + "\n" + "No living spaces\n" + "=" * 30)
+                file.write("\n" + person.full_name or "None")
             for person in unallocated_living_spaces:
-                file.write("\n" + person or "None")
+                file.write("\n" + person.full_name or "None")
             print("{}.txt written succesfully".format(file_name))
 
     @staticmethod
@@ -294,30 +287,34 @@ class Amity(object):
              screen."""
         offices = [room for room in Amity.office_allocations if room != "None"]
         living_spaces = [room for room in Amity.living_space_allocations if room != "None"]
-        if room_name.upper() not in offices and room_name.upper() not in living_spaces:
+        if room_name not in offices and room_name not in living_spaces:
             print("sorry! the room does not exist")
         else:
             print("=" * 30 + "\n Members \n" + "=" * 30)
-            if room_name.upper() in offices:
-                for person in Amity.office_allocations[room_name.upper()]:
+            if room_name in offices:
+                for person in Amity.office_allocations[room_name]:
                     print(person)
-            elif room_name.upper() in living_spaces:
-                for person in Amity.living_space_allocations[room_name.upper()]:
+            elif room_name in living_spaces:
+                for person in Amity.living_space_allocations[room_name]:
                     print(person)
     
-    def load_state(self, dbname):
+    def load_state(self, db_name):
         # connect to the db provided
-        self.save_state()
         # query all rooms and people
-        self.session = SessionMaker()
+        self.db_name = db_name + '.db'
+        self.engine = create_engine('sqlite:///' + self.db_name)
+        Base.metadata.bind = self.engine
+
+        SessionMaker = sessionmaker(bind=self.engine)
+        session = SessionMaker()
         people = session.query(Person).all()
         rooms = session.query(Room).all()
         # save them to the current Amity instance        
-        for room in Amity.all_rooms:
+        for room in rooms:
             Amity.all_rooms.append(room)
-        for person in Amity.all_people:
+        for person in people:
             Amity.all_people.append(people)
-        print(Fore.GREEN + "Data from {} loaded to the app.".format(dbname))
+        print(Fore.GREEN + "Data from {} loaded to the app.".format(db_name))
         
     
 
@@ -346,10 +343,55 @@ class Amity(object):
         # save people's data
         people = []
         for person in self.all_people:
-            new_person = Person(id=person.person_id, name=person.full_name, category=person.category, wants_accomodation=person.wants_accomodation)
+            wants_accomodation = True if person.wants_accomodation == "Y" else False
+            print(person, person.wants_accomodation)
+            new_person = Person(id=person.person_id, name=person.full_name, category=person.category, wants_accomodation=wants_accomodation)
             people.append(new_person)
         # self.session.update(new_person)
         self.session.add_all(people)
         self.session.commit()
 
 
+space = Amity()
+# space.create_room('O', ["MyRoom"])
+space.create_room('O', ['VaLhAla'])
+# space.create_room('O', ['valhalmka'])
+space.create_room('L', ['Ruby'])
+
+space.add_person('faith', 'dede', 'F', 'Y')
+space.add_person('fath', 'dee', 'S', 'Y')
+space.add_person('ndVKGungu', 'kevGBin', 'S', 'Y')
+space.add_person('fSSWnjh', 'deme', 'F', 'Y')
+space.add_person('fkFFjh', 'dHHVme', 'F', 'N')
+space.add_person('fAAADA', 'demBGe', 'F', 'Y')
+space.add_person('fkjnSSjh', 'deEme', 'F', 'Y')
+
+
+
+
+
+
+
+
+
+# space.reallocate_person('faith', 'dede', 'L', 'valhala')
+# print(Amity.living_spaces)
+# print(Amity.office_spaces)
+# print(space.reallocate_person('faith', 'dede', 'L', 'valhala'))
+# print(Amity.living_spaces)
+# print(Amity.all_rooms)
+# space = Amity()
+# space.add_person('faith', 'dede', 'F', 'Y')
+
+# *******************
+
+# space.load_people("people.txt")
+# space.save_state("faha")
+# space.print_allocations('non-sense')
+# space.print_unallocated('ingine')
+# space.print_room('VaLhAla')
+space.load_state("faha")
+
+# *******************
+
+# print(Amity.living_spaces)

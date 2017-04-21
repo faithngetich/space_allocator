@@ -41,6 +41,7 @@ def docopt_cmd(func):
             print('Invalid command!')
             print(e)
             return
+
         except SystemExit:
             # The SystemExit exception prints the usage for --help
             # We do not need to do the print here.
@@ -65,15 +66,11 @@ class AmitySystem(cmd.Cmd):
 
     @docopt_cmd
     def do_create_room(self, args):
-        """Usage: create_room (O|L) <room_name>..."""
-
-        if args["O"]:
-            room_type = "O"
-        else:
-            room_type = "L"
-
-        amity.create_room(room_type, args["<room_name>"])
-
+        """Usage: create_room <room_type> <room_name>..."""
+        room_name = args["<room_name>"]
+        room_type = args["<room_type>"]
+        amity.create_room(args["<room_type>"],args["<room_name>"])
+        
     @docopt_cmd
     def do_add_person(self, args):
         """
@@ -107,21 +104,26 @@ class AmitySystem(cmd.Cmd):
         """
         filename = args["--output"]
         amity.print_allocations(filename)
-
+    @docopt_cmd
     def do_load_state(self, arg):
         """
         Loads data from the specified db into the app.
         Usage: load_state <filename>
         """
         self.amity.load_state(arg["<filename>"])
-
+    @docopt_cmd
+    def do_load_people(self, args):
+        """Usage: load_state <text_file>"""
+        amity.load_people(args["<text_file>"])
+    
+    
     @docopt_cmd
     def do_print_room(self, args):
         """Usage: print_room <room_name>"""
 
         room_name = args["<room_name>"]
         amity.print_room(room_name)
-
+    @docopt_cmd
     def do_clear(self, arg):
         """Clears screen"""
 
