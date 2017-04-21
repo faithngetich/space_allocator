@@ -352,40 +352,4 @@ class Amity(object):
         self.session.add_all(people)
         self.session.commit()
 
-space = Amity()
-# # space.create_room('O', ["MyRoom"])
-# space.create_room('O', ['VaLhAla'])
-# space.create_room('O', ['valhala'])
-space.create_room('L', ['Ruby','Narnia', 'valhala'])
-
-
-space.add_person('faith', 'dede', 'F', 'Y')
-space.add_person('fai', 'den', 'S', 'Y')
-space.add_person('fauz', 'mini', 'F', 'N')
-space.add_person('fAm', 'de', 'F', 'Y')
-
-
-space.reallocate_person('faith dede','valhala')
-space.reallocate_person('faith dede', 'valhala')
-space.reallocate_person('fauz mini', 'Ruby')
-space.reallocate_person('fAm dede','valhala')
-# print(Amity.living_spaces)
-# print(Amity.office_spaces)
-# print(space.reallocate_person('faith', 'dede', 'L', 'valhala'))
-# print(Amity.living_spaces)
-# print(Amity.all_rooms)
-# space = Amity()
-# space.add_person('faith', 'dede', 'F', 'Y')
-
-# *******************
-
-# space.load_people("people.txt")
-# space.save_state("faa")
-# space.print_allocations()
-# space.print_unallocated()
-# space.print_room('elda')
-
-# *******************
-
-# print(Amity.living_spaces)
 

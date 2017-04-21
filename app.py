@@ -67,10 +67,6 @@ class AmitySystem(cmd.Cmd):
     def do_create_room(self, args):
         """Usage: create_room (O|L) <room_name>..."""
 
-        # rooms = args["<room_name>"]
-        # types = args["<room_type>"]
-        # for room in rooms:
-        #     r_type = types[rooms.index(room)]
         if args["O"]:
             room_type = "O"
         else:
