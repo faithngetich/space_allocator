@@ -6,13 +6,18 @@ from models.rooms import Office, LivingSpace
 from models.persons import Fellow, Staff
 from models.model import (Base, Room, Person, DatabaseCreator)
 from models.model import Base
+from colorama import init
+init(autoreset=True)
+from termcolor import colored
+from  colorama import Fore, Back, Style
+
 
 class Amity(object):
     all_staff = []
     all_fellows = []
     all_rooms = []
-    office_allocations = {'None':[]}
-    living_space_allocations = {'None':[]}
+    office_allocations = {}
+    living_space_allocations = {}
     all_people = []
     living_spaces_waiting_list = []
     office_spaces_waiting_list = []
@@ -27,12 +32,12 @@ class Amity(object):
                     office = Office(name)
                     self.all_rooms.append(office)
                     self.office_allocations[office] = []
-                    print("Office {} successfully created.".format(office.room_name))
+                    print(Fore.GREEN + "Office {} successfully created.".format(office.room_name.upper()))
                 elif room_type.upper() == 'L':
                     living_space = LivingSpace(name)
                     self.all_rooms.append(living_space)
                     self.living_space_allocations[living_space] = []
-                    print("Living space {} successfully created.".format(living_space.room_name))
+                    print(Fore.GREEN + "Living space {} successfully created.".format(living_space.room_name.upper()))
 
     def generate_random_office_spaces(self):
         """Generates random office"""
@@ -67,12 +72,15 @@ class Amity(object):
             if category is "F":
                 # create fellow object and adds them to fellow list
                 fellow = Fellow(first_name, last_name)
-                Amity.all_fellows.append(fellow)
+                self.all_people.append(fellow)
+                self.all_fellows.append(fellow)
                 allocated_office = self.generate_random_office_spaces()
+                print(fellow.person_id)
                 if allocated_office:
                     # if random room selected
                     Amity.office_allocations[allocated_office].append(fellow)
-                    print("You have allocated {} successfully ".format(fellow.first_name))
+                    
+                    print(Fore.GREEN +"You have allocated {} successfully to {}".format(fellow.first_name,allocated_office.room_name))
                 else:
                     Amity.office_spaces_waiting_list.append(fellow)
                     print("Sorry, no space available {} has been added to the waiting list".format(fellow.first_name))
@@ -80,6 +88,7 @@ class Amity(object):
                 # create staff object and adds them to list
                 staff = Staff(first_name, last_name)
                 Amity.all_staff.append(staff)
+                Amity.all_people.append(staff)
                 allocated_office = self.generate_random_office_spaces()
                 if allocated_office:
                     # if random room selected
@@ -87,21 +96,22 @@ class Amity(object):
                     print("You have allocated {} successfully ".format(staff.first_name))
                 else:
                     Amity.office_spaces_waiting_list.append(staff)
-                    print("Sorry, no space available {} has been added to the waiting list".format(staff.first_name))
+                    print(Fore.RED+"Sorry, no space available {} has been added to the waiting list".format(staff.first_name))
         else:
             # if wants accomodation
             if category is "F":
                 # create fellow object
                 fellow = Fellow(first_name, last_name)
+                Amity.all_people.append(fellow)
                 Amity.all_fellows.append(fellow)
                 allocated_office = self.generate_random_office_spaces()
                 if allocated_office:
                     # if random room selected
                     Amity.office_allocations[allocated_office].append(fellow)
-                    print("You have allocated {} successfully ".format(fellow.first_name))
+                    print("You have allocated {} successfully to {}".format(fellow.first_name,office_allocations.room_name))
                 else:
                     Amity.office_spaces_waiting_list.append(fellow)
-                    print("Sorry, no space available {} has been added to the waiting list".format(fellow.first_name))
+                    print(Fore.RED+"Sorry, no space available {} has been added to the waiting list".format(fellow.first_name))
                 
                 # add living space
                 allocated_living_space = self.generate_random_living_spaces()
@@ -110,9 +120,10 @@ class Amity(object):
                     print("You have allocated {} successfully to living space {} ".format(fellow.first_name, allocated_living_space.room_name))
                 else:
                     Amity.living_spaces_waiting_list.append(fellow)
-                    print("Sorry, no space available {} has been added to the waiting list".format(fellow.first_name))
+                    print(Fore.RED+"Sorry, no space available {} has been added to the waiting list".format(fellow.first_name))
             else:
                 staff = Staff(first_name, last_name)
+                Amity.all_people.append(staff)
                 Amity.all_staff.append(staff)
                 allocated_office = self.generate_random_office_spaces()
                 if allocated_office:
@@ -122,10 +133,10 @@ class Amity(object):
                     # reject adding staff to living space
                 else:
                     Amity.office_spaces_waiting_list.append(staff)
-                    print("Sorry, no space available {} has been added to the waiting list".format(staff.first_name))
+                    print(Fore.RED+"Sorry, no space available {} has been added to the waiting list".format(staff.first_name))
 
                 
-                print("Staff not entitled to living space")
+                print(Fore.RED+ "Staff not entitled to living space")
 
     def get_person(self, person_id):
         """To return person object given person id."""
@@ -159,7 +170,7 @@ class Amity(object):
             return "There are no rooms available"
 
     def get_person_room(self, person_id, room_type):
-        """To return currently allocated room."""
+        """To return currently allocated room given a valid person id"""
         result = None
         if room_type is "O":
             for room in list(self.office_allocations.keys()):
@@ -175,36 +186,46 @@ class Amity(object):
             return result
         else:
             return "Person not allocated to room"
+
                 
     def reallocate_person(self, person_id, new_room_name):
-        full_name = first_name.upper() + " " + last_name.upper()
-        fellows = [person.full_name for person in self.all_people if person.category == "FELLOW"]
-        staff = [person.full_name for person in self.all_people if person.category == "STAFF"]
-        available_living_spaces = ([room.room_name for room in self.all_rooms if room.room_type == "LIVING_SPACE" and len(self.living_space_allocations[room.room_name]) < LivingSpace.room_capacity])
-        available_offices = [room.room_name for room in self.all_rooms
-                            if room.room_type == "OFFICE"
-                            and len(self.office_allocations[room.room_name]) < Office.room_capacity]
-        if full_name not in fellows and full_name not in staff:
-            print("Sorry, the person doesn't exist.")
-
-        elif new_room.upper() not in available_living_spaces and new_room.upper() not in available_offices:
-            print("The room requested does not exist or is not available")
-            print("Available office \n", available_offices)
-            print("Available living space \n", available_living_spaces)
+        """ moves person from one room to another room"""
+        # gets person object from person id
+        person_object = self.get_person(person_id)
+        if person_object == "Invalid person id":
+            # prints id does not exist
+            print(person_object)
+            return person_object
+        elif person_object == "There are no people in the system.":
+            print("There are no people in the system. Add person(s) first, then reallocate")
+            return person_object
         else:
-            if room_type.upper() == "L":
-                if new_room in available_offices and new_room not in available_living_spaces:
-                    print("The room selected is not a living space")
-                elif full_name not in fellows:
-                    return "The person has to exist and be a fellow!"
-                else:
-                    for room in self.living_space_allocations.keys():
-                        if full_name in self.living_space_allocations[room]:
-                            lspace = self.living_space_allocations[room]
-                            lspace.remove(full_name)
-                            self.office_allocations[new_room.upper()].append(full_name)
-                            print("successfully reallocated")
-
+            new_room_object = self.get_room(new_room_name)
+            if new_room_object == "Room name does not exist":
+                return "Room name does not exist"
+            elif new_room_object == "There are no rooms available":
+                return "There are no rooms available"
+            else:
+                if type(person_object) == Staff and type(new_room_object) == LivingSpace:
+                    cprint("Cannot reallocate staff to living space.", "red")
+                    return "Cannot reallocate staff to living space."
+                elif type(new_room_object) == Office:
+                    current_room = self.get_person_room(person_id, "O")
+                    if current_room == "Person not allocated to room":
+                        # if person has no office
+                        cprint("{} has no current office space,hence cannot reallocate".format(person_object.first_name))
+                        return "person has no current office space, hence canot reallocate"
+                    elif current_room == new_room_object:
+                        print("Cannot reallocate a person to the same room.")
+                        return "Cannot reallocate to same room."
+                    else:
+                        # remove from current office
+                        (self.office_allocations[current_room].remove(person_object))
+                        # append to new room
+                        (self.office_allocations[new_room_object].append(person_object))
+                        print("{} {} has been reallocated from office {} to {}".format(person_object.first_name,person_object.last_name, current_room.room_name,new_room_object.room_name))
+                        return "Has been reallocated from  office"
+                           
     def load_people(self, filename):
         """loads people from a txt file to the app"""
         with open (filename, 'r') as people_file:
@@ -283,12 +304,22 @@ class Amity(object):
             elif room_name.upper() in living_spaces:
                 for person in Amity.living_space_allocations[room_name.upper()]:
                     print(person)
-    @staticmethod
-    def load_state(dbname=None):
+    
+    def load_state(self, dbname):
         # connect to the db provided
+        self.save_state()
         # query all rooms and people
-        # save them to the current Amity instance.
-       pass
+        self.session = SessionMaker()
+        people = session.query(Person).all()
+        rooms = session.query(Room).all()
+        # save them to the current Amity instance        
+        for room in Amity.all_rooms:
+            Amity.all_rooms.append(room)
+        for person in Amity.all_people:
+            Amity.all_people.append(people)
+        print(Fore.GREEN + "Data from {} loaded to the app.".format(dbname))
+        
+    
 
     def save_state(self, db_name):
         # create a db called db_name
@@ -306,8 +337,6 @@ class Amity(object):
         rooms = []
         for room in self.all_rooms:
             current_occupants = ''
-            print('There are {}'.format(room.members))
-
             for member in room.members:
                 current_occupants += member.full_name
             new_room = Room(id=room.room_id, name=room.room_name.upper(), room_type=room.room_type, room_capacity=room.room_capacity, occupants=current_occupants)
@@ -323,5 +352,40 @@ class Amity(object):
         self.session.add_all(people)
         self.session.commit()
 
+space = Amity()
+# # space.create_room('O', ["MyRoom"])
+# space.create_room('O', ['VaLhAla'])
+# space.create_room('O', ['valhala'])
+space.create_room('L', ['Ruby','Narnia', 'valhala'])
 
+
+space.add_person('faith', 'dede', 'F', 'Y')
+space.add_person('fai', 'den', 'S', 'Y')
+space.add_person('fauz', 'mini', 'F', 'N')
+space.add_person('fAm', 'de', 'F', 'Y')
+
+
+space.reallocate_person('faith dede','valhala')
+space.reallocate_person('faith dede', 'valhala')
+space.reallocate_person('fauz mini', 'Ruby')
+space.reallocate_person('fAm dede','valhala')
+# print(Amity.living_spaces)
+# print(Amity.office_spaces)
+# print(space.reallocate_person('faith', 'dede', 'L', 'valhala'))
+# print(Amity.living_spaces)
+# print(Amity.all_rooms)
+# space = Amity()
+# space.add_person('faith', 'dede', 'F', 'Y')
+
+# *******************
+
+# space.load_people("people.txt")
+# space.save_state("faa")
+# space.print_allocations()
+# space.print_unallocated()
+# space.print_room('elda')
+
+# *******************
+
+# print(Amity.living_spaces)
 

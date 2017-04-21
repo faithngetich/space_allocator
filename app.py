@@ -2,7 +2,7 @@
 """
 Usage:
     amity create_room (<room_name> <room_type>)...
-    amity add_person <first_name> <last_name> (Fellow | Staff) [--wants_accomodation=(Y | N)]
+    amity add_person <first_name> <last_name> (F | S) [--wants_accomodation=value]
     amity print_allocations [-output=<filename>]
     amity reallocate_person <first_name> <last_name> <room_type> <new_name>
     amity print_room <room_name>
@@ -81,34 +81,26 @@ class AmitySystem(cmd.Cmd):
     @docopt_cmd
     def do_add_person(self, args):
         """
-        Usage:
-            add_person <first_name> <last_name> (fellow | staff) [--wants_accomodation=<opt>]
-        Options:
-            -a, --wants_accomodation=<opt>  Wants accomodation [default: N]
+        Usage: add_person <first_name> <last_name> (F | S) [--wants_accomodation=value]
         """
+        if args["F"]:
+            category = "F"
+        else:
+            category = "S"
         first_name = args["<first_name>"]
         last_name = args["<last_name>"]
-        if args["fellow"]:
-            role = "FELLOW"
-        else:
-            role = "STAFF"
-        accomodate = args["--wants_accomodation"].upper()
-        if accomodate == 'Y' or accomodate == 'N':
-            amity.add_person(first_name, last_name, role, accomodate)
-        else:
-            cprint("Invalid accomodation option. Please enter Y/N", 'red')
-
-    
+        amity.add_person(first_name, last_name, category, args["--wants_accomodation"])
+        
     @docopt_cmd
     def do_reallocate_person(self, args):
-        """Usage: reallocate_person <first_name> <last_name> <room_name>"""
+        """Usage: reallocate_person <person_id> <new_room>"""
+        if args["<person_id>"].isalpha():
+            print("person id cannot be string")
+            return
+        else:
+            (amity.reallocate_person(int(args['<person_id>']),
+                                     args['<new_room>']))
 
-        first_name = args["<first_name>"]
-        last_name = args["<last_name>"]
-        room_name = args["<room_name>"]
-        person_name = first_name + " " + last_name
-
-        amity.reallocate_person(person_name, room_name)
 
     @docopt_cmd
     def do_print_allocations(self, args):
@@ -117,9 +109,15 @@ class AmitySystem(cmd.Cmd):
         Options:
         -o, --output=<filename>  Save allocations to file
         """
-
         filename = args["--output"]
         amity.print_allocations(filename)
+
+    def do_load_state(self, arg):
+        """
+        Loads data from the specified db into the app.
+        Usage: load_state <filename>
+        """
+        self.amity.load_state(arg["<filename>"])
 
     @docopt_cmd
     def do_print_room(self, args):
