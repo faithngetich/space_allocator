@@ -19,6 +19,11 @@ class Amitytest(unittest.TestCase):
         self.amity.add_person('dede','faith','F','N')
         self.assertEqual(len(self.amity.all_fellows), all_fellows, msg = "fellow not added")
 
+    def test_add_person_adds_staff_to_list(self):
+        all_staff = len(self.amity.all_staff) + 1
+        self.amity.add_person('ded','fai','S','N')
+        self.assertEqual(len(self.amity.all_staff), all_staff, msg = "staff not added")
+
     def test_office_is_created_successfully(self):
         """Tests offices are created"""
         self.amity.create_room('O', ['Krypto'])
@@ -28,6 +33,7 @@ class Amitytest(unittest.TestCase):
         """Tests living space are created"""
         self.amity.create_room('L', ['Krpto'])
         self.assertTrue('Krpto' in self.amity.living_space_allocations.keys())
+        
 
     def test_reallocate_person(self):
         self.amity.create_room('O', ['oculus'])
@@ -38,7 +44,6 @@ class Amitytest(unittest.TestCase):
 
 
    
-
 if __name__ == '__main__':
     unittest.main()
 
