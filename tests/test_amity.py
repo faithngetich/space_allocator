@@ -1,3 +1,4 @@
+import os
 import unittest
 from .context import Amity
 from ..views import Amity
@@ -8,9 +9,13 @@ class Amitytest(unittest.TestCase):
     
     def setUp(self):
         self.amity = Amity()
+        self.db_name = "faha"
 
     def tearDown(self):
+        if os.path.exists(self.db_name + ".db"):
+            os.remove(self.db_name + ".db")
         del self.amity
+        
         # self.amity.all_fellows = []
         # self.all_fellows = []
         # self.all_rooms = []
@@ -130,7 +135,23 @@ class Amitytest(unittest.TestCase):
         self.amity.add_person("Fello", "Dl", "S", "Y")
 
         self.assertEqual(self.amity.print_allocations(),"office allocations printed successfully")
-    # 
+    
+    def test_save_state(self):
+        """ Test that save state , saves people successfully"""
+        self.amity.create_room("O", ["Narnia"])
+        self.amity.create_room("L", ["Python"])
+        self.amity.add_person("Fell", "Dl", "S", "Y")
+        self.amity.add_person("Fell", "Dl", "S", "Y")
+        self.assertEqual(self.amity.save_state(self.db_name), "successfully saved people")
+
+    def test_load_state(self):
+        """ Test that the method loads people to the app succesfully"""
+        self.amity.create_room("O", ["Narnia"])
+        self.amity.create_room("L", ["Python"])
+        self.amity.add_person("Fell", "Dl", "S", "Y")
+        self.amity.add_person("Fell", "Dl", "S", "Y")
+        self.amity.save_state(self.db_name)
+        self.assertEqual(self.amity.load_state(self.db_name), "Successfully loaded people to the app")
    
     
     # def test_fellow_wants_accomodation(self):
