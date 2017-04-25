@@ -24,6 +24,7 @@ from pyfiglet import figlet_format
 from termcolor import cprint
 from views import Amity
 
+
 amity = Amity()
 
 def docopt_cmd(func):
@@ -59,9 +60,10 @@ def intro():
     print("Welcome to Amity! Here is a list of commands to get you started." +
           " Type 'help' anytime to access documented commands")
     print("\n\n\n\n\n")
-    print(amity)
-    print(amity.__dict__)
+    # print(amity)
+    # print(amity.__dict__)
     cprint(__doc__, 'magenta')
+
 
 class AmitySystem(cmd.Cmd):
     prompt = '(Amity) '
@@ -77,7 +79,7 @@ class AmitySystem(cmd.Cmd):
         #     amity.create_room(r_type)
 
         room_type = None
-        if args["O"]:
+        if args["O"].upper() == 'O':
             room_type = "O"
         else:
             room_type = "L"
@@ -89,7 +91,7 @@ class AmitySystem(cmd.Cmd):
         """
         Usage: add_person <first_name> <last_name> (F | S) [--wants_accomodation=value]
         """
-        if args["F"]:
+        if args["F"].upper() == 'F':
             category = "F"
         else:
             category = "S"
@@ -153,7 +155,7 @@ class AmitySystem(cmd.Cmd):
 
         os.system('clear')
 
-     @docopt_cmd
+    @docopt_cmd
     def do_load_people(self, args):
         """Usage: load_state <text_file>"""
         amity.load_people(args["<text_file>"])
