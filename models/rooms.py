@@ -2,6 +2,7 @@ class Room(object):
     def __init__(self, room_name):
         self.room_id = id(self)
         self.room_name = room_name
+        self.members = []
 
     def __str__(self):
         """To make the class human readable."""
@@ -16,7 +17,6 @@ class Office(Room):
         """Override the init method of Person superclass."""
         super(Office, self).__init__(room_name)
         
-        self.members = []
 
 class LivingSpace(Room):
     
@@ -27,6 +27,6 @@ class LivingSpace(Room):
         """Override the init method of Person superclass."""
         super(LivingSpace, self).__init__(room_name)
 
-        self.members = []
+       
 
     
