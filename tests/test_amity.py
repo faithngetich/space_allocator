@@ -134,11 +134,12 @@ class Amitytest(unittest.TestCase):
    
     
     # def test_fellow_wants_accomodation(self):
+    #     self.amity.create_room('O', ['bur'])
     #     self.amity.create_room('L', ['narnia'])
     #     self.amity.add_person('dede', 'fauz', 'F', 'Y')
-    #     print(self.amity.living_space_allocations['narnia'][0])
-    #     print("DEDE" in self.amity.living_space_allocations['narnia'])
-    #     self.assertTrue('DEDE' in self.amity.living_space_allocations['narnia'], msg = 'fellow not in accomodation list')
+    #     # print(self.amity.living_space_allocations['narnia'][0])
+    #     # print("DEDE" in self.amity.living_space_allocations['narnia'])
+    #     self.assertTrue('dede' in self.amity.living_space_allocations, msg = 'fellow not in accomodation list')
 
     #     self.assertFalse('dede' not in self.amity.accomodation_list, msg = 'fellow should be in the accomodation list')
     #     self.amity.add_person('dede', 'fellow', 'wants_accomodation = Y')
