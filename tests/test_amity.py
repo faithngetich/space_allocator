@@ -8,34 +8,30 @@ from ..models.rooms import LivingSpace
 class Amitytest(unittest.TestCase):
     
     def setUp(self):
+        """To set up test variables."""
         self.amity = Amity()
         self.db_name = "faha"
 
     def tearDown(self):
+        """To free variables for fresh use in other tests."""
         if os.path.exists(self.db_name + ".db"):
             os.remove(self.db_name + ".db")
         del self.amity
         
-        # self.amity.all_fellows = []
-        # self.all_fellows = []
-        # self.all_rooms = []
-        # self.office_allocations = {}
-        # self.living_space_allocations = {}
-        # self.all_people = []
-        # self.living_spaces_waiting_list = []
-        # self.office_spaces_waiting_list = []
-    
     def test_create_room_adds_room_succesfully(self):
+        """To test if create_room adds office(s) successfully."""
         self.amity.create_room('O', ['Krypton'])
         self.assertIn('KRYPTON', [room.room_name.upper() for room in self.amity.all_rooms])
         
 
     def test_add_person_adds_fellow_to_list(self):
+        """To test if fellow is added to fellow list"""
         all_fellows = len(self.amity.all_fellows) + 1
         self.amity.add_person('dede','faith','F','N')
         self.assertEqual(len(self.amity.all_fellows), all_fellows, msg = "fellow not added")
 
     def test_add_person_adds_staff_to_list(self):
+        """To test if staff is added to staff list"""
         all_staff = len(self.amity.all_staff) + 1
         self.amity.add_person('ded','fai','S','N')
         self.assertEqual(len(self.amity.all_staff), all_staff, msg = "staff not added")
@@ -83,6 +79,7 @@ class Amitytest(unittest.TestCase):
 
 
     def test_fellow_does_not_want_accomodation(self):
+        """To test if fellow does not want accomodation"""
         self.amity.add_person('dedeh', 'fagh', 'F', 'N')
         self.assertFalse('dedeh' in self.amity.living_space_allocations, msg = 'fellow does not want accomodation')
 
@@ -98,7 +95,6 @@ class Amitytest(unittest.TestCase):
         self.amity.add_person("Stella", "Storl", "S", "N")
         self.assertFalse('stella' in self.amity.office_allocations, msg = "person not reallocated succesfully to office")
 
-    
     def test_add_person_adds_fellows_to_living_space_waiting_list(self):
         """To test if add_person caters for excess people.
         Adds fellow to living space waiting list when offices are full.
@@ -114,17 +110,14 @@ class Amitytest(unittest.TestCase):
     def test_print_room_does_not_print_inexistent_room(self):
         """To test if method prints rooms and occupants successfully."""
         room_name = "I don't exist!!!"
-        self.assertEqual(self.amity.print_room(room_name),"sorry! the room does not exist")
+        self.assertEqual(self.amity.print_room(room_name),None)
     
     def test_print_unallocated_returns_all_not_in_accomodation_list(self):
+        """"To test print unallocated works"""
         self.amity.print_unallocated('')
         self.assertFalse('Dan' in self.amity.office_allocations, msg = "person not in accomodation list")
 
-    def test_print_rooms_returns_names(self):
-        self.amity.add_person('collins', 'star', 'S' 'N')
-        self.amity.print_room('Krypton')
-        self.assertFalse('dede'in self.amity.print_room('krypton'))
-        
+
     def test_print_allocations_prints_successfully_to_screen(self):
         """To test if method prints allocations to screen."""
         self.amity.create_room("O", ["Narnia"])
@@ -152,35 +145,7 @@ class Amitytest(unittest.TestCase):
         self.amity.add_person("Fell", "Dl", "S", "Y")
         self.amity.save_state(self.db_name)
         self.assertEqual(self.amity.load_state(self.db_name), "Successfully loaded people to the app")
-   
-    
-    # def test_fellow_wants_accomodation(self):
-    #     self.amity.create_room('O', ['bur'])
-    #     self.amity.create_room('L', ['narnia'])
-    #     self.amity.add_person('dede', 'fauz', 'F', 'Y')
-    #     # print(self.amity.living_space_allocations['narnia'][0])
-    #     # print("DEDE" in self.amity.living_space_allocations['narnia'])
-    #     self.assertTrue('dede' in self.amity.living_space_allocations, msg = 'fellow not in accomodation list')
 
-    #     self.assertFalse('dede' not in self.amity.accomodation_list, msg = 'fellow should be in the accomodation list')
-    #     self.amity.add_person('dede', 'fellow', 'wants_accomodation = Y')
-    #     self.assertRaises("Fellow already exists")
-
-    #     self.amity.create_room('O', 'valhalla')
-    #     self.amity.reallocate_person('dede', 'fat', 'O', 'valhalla')
-    #     self.assertIn('DEDE', 'FAT', self.amity.allocated_rooms['VALHALLA'])
-
-    # def test_if_room_is_office(self):
-    #     self.amity.create_room('office', 'hogwarts')
-    #     #self.assertEqual(hogwarts.room_capacity, 6)
-    #     offices1 = len(self.amity.offices) + 1
-    #     self.assertEqual(len(self.amity.offices), offices1, msg = "livingroom is not added succesfully")
-
-   
-    
-    
-    
 
 if __name__ == '__main__':
     unittest.main()
-
