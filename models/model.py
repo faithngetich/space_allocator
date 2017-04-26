@@ -4,7 +4,6 @@ import sqlalchemy
 
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, Boolean
 from sqlalchemy.ext.declarative import declarative_base
-
 from sqlalchemy.orm import relationship, sessionmaker
 
 from sqlalchemy import create_engine
@@ -20,12 +19,13 @@ class Person(Base):
     __tablename__ = "People"
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
-    name = Column(String, nullable=False)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
     category = Column(String, nullable=False)
     wants_accomodation = Column(Boolean)
 
     def __repr__(self):
-        return 'name{}'.format(self.name)
+        return 'first name{} last name{}'.format(self.first_name,self.last_name)
 
 
 class Room(Base):
