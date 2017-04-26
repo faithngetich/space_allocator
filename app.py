@@ -8,7 +8,7 @@ Usage:
     amity print_room <room_name>
     amity print_unallocated [-output=<filename>]
     amity load_people <filename>
-    amity save_state [--database=<sqlite_database>]
+    amity save_state (--database=<sqlite_database>)
     amity load_state
     amity (-i | --interactive)
     amity (-h | --help | --version)
@@ -111,10 +111,15 @@ class AmitySystem(cmd.Cmd):
 
     @docopt_cmd
     def do_save_state(self, args):
-        """Usage: save_state [--db=sqlite_database]"""
-        # print(args['--db'])
-        amity.save_state(args['--db'])
-
+        """Persists app data into the given db
+        Usage: save_state (--db_name=sqlite_db)
+        """
+        db = args['--db_name']
+        amity.save_state(db)
+        # if db:
+        #     else:
+        #     amity.save_state(args['--db_name'])
+        
     @docopt_cmd
     def do_print_unallocated(self, args):
         """Usage: print_unallocated [--file=text_file]"""
@@ -124,11 +129,10 @@ class AmitySystem(cmd.Cmd):
     @docopt_cmd
     def do_print_allocations(self, args):
         """
-        Usage: print_allocations [--output=<filename>]
-        Options:
-        -o, --output=<filename>  Save allocations to file
+        Prints all rooms and the people in them.
+        Usage: print_allocations [--o=filename]
         """
-        filename = args["--output"]
+        filename = args["--o"] or ""
         amity.print_allocations(filename)
     @docopt_cmd
     def do_load_state(self, arg):
@@ -136,7 +140,8 @@ class AmitySystem(cmd.Cmd):
         Loads data from the specified db into the app.
         Usage: load_state <filename>
         """
-        self.amity.load_state(arg["<filename>"])
+        amity.load_state(arg["<filename>"])
+
     @docopt_cmd
     def do_load_people(self, args):
         """Usage: load_state <text_file>"""
