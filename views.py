@@ -13,7 +13,21 @@ from  colorama import Fore, Back, Style
 
 
 class Amity(object):
+    """all_staff - is a list of staff objects names
+
+       all_fellows - list of fellows object names
+
+       office_allocations - dictionary with room names as keys and occupants list as It's value
+
+       living_spaces_allocations - dictionary with room names as keys and occupants list as It's value
+
+       all_people - has people's names
+
+       living_spaces_waiting_list - Has people with no office spaces
+
+       office_spaces_waiting_list - Has people with no living space spaces"""
     def __init__(self):
+        """initialize the class objects"""
         self.all_staff = []
         self.all_fellows = []
         self.all_rooms = []
@@ -236,7 +250,7 @@ class Amity(object):
         for room in self.office_allocations.keys():
             if room != "None":
                 print ("\n" +Fore.BLUE + room.upper())
-                for person in selfre.office_allocations[room]:
+                for person in self.office_allocations[room]:
                     print(person)
                     
         print(Fore.MAGENTA + "=" * 30 + "\n" + "Living spaces Allocations\n" + "=" *30)
@@ -245,7 +259,7 @@ class Amity(object):
                 print ("\n" + Fore.BLUE +room.upper() )
                 for person in self.living_space_allocations[room]:
                     print(person)
-                    
+
         if file_name:
             nfile = open(file_name + ".txt", "a")
             for room in self.office_allocations.keys():
@@ -260,6 +274,7 @@ class Amity(object):
                         nfile.write(person.full_name.upper()+"\n")
             print("{}.txt has been written".format(file_name))
             return "Successfully written the file"
+        return "office allocations printed successfully"
     
     def print_unallocated(self, file_name=None):
         """Prints all people not allocated"""
@@ -327,6 +342,7 @@ class Amity(object):
         
 
     def save_state(self, db_name):
+        """Persists app data into the given db"""
         # create a db called db_name
         self.db_name = db_name + '.db'
         self.engine = create_engine('sqlite:///' + self.db_name)
