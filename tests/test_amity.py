@@ -93,7 +93,7 @@ class Amitytest(unittest.TestCase):
         self.amity.add_person("David", "White", "S", "N")
         self.amity.add_person("Xie", "Yuen", "S", "N")
         self.amity.add_person("Stella", "Storl", "S", "N")
-        self.assertFalse('stella' in self.amity.office_allocations, msg = "person not reallocated succesfully to office")
+        self.assertFalse('stella' in self.amity.office_allocations, msg = "person not allocated succesfully to office")
 
     def test_add_person_adds_fellows_to_living_space_waiting_list(self):
         """To test if add_person caters for excess people.
