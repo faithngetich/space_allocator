@@ -2,7 +2,9 @@
 """
 Usage:
     amity create_room (O|L) <room_name>...
+    amity delete_rooms(args['<room_name>'])
     amity add_person <first_name> <last_name> (F | S) [--wants_accomodation=value]
+    amity delete_employee(int(args['<person_id>']))
     amity print_allocations [-output=<filename>]
     amity reallocate_person <person_id> <new_room>
     amity print_room <room_name>
@@ -110,7 +112,7 @@ class AmitySystem(cmd.Cmd):
                                      args['<new_room>']))
 
     @docopt_cmd
-    def do_save_state(self, args):
+    def save_state(self, args):
         """Persists app data into the given db
         Usage: save_state (--db_name=sqlite_db)
         """
@@ -134,6 +136,22 @@ class AmitySystem(cmd.Cmd):
         """
         filename = args["--o"] or ""
         amity.print_allocations(filename)
+
+    @docopt_cmd
+    def do_delete_employee(self, args):
+        """Usage: delete_employee <person_id>"""
+        if args["<person_id>"].isalpha():
+            print("person id cannot be string")
+            return
+        else:
+            (amity.delete_employee(int(args['<person_id>'])))
+
+    @docopt_cmd
+    def do_delete_rooms(self, args):
+        """Usage: delete_room <room_name>"""
+        amity.delete_rooms(args['<room_name>'])
+
+
     @docopt_cmd
     def do_load_state(self, arg):
         """
