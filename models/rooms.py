@@ -3,6 +3,7 @@ class Room(object):
         self.room_id = id(self)
         self.room_name = room_name
         self.members = []
+        self.room_capacity = 0
 
     def __str__(self):
         """To make the class human readable."""
