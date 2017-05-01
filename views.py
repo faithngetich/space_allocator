@@ -269,6 +269,15 @@ class Amity(object):
 
             return "staff deleted"
 
+    def delete_rooms(self, room_name):
+        room_object = self.get_room
+        if room_object == "Room does not exist":
+           print(room_object)
+           return room_object
+        for room_object in self.all_rooms:
+            self.all_rooms.remove(room_object)
+            print(Fore.GREEN + "{} has been deleted".format(room_object.room_name))
+            return 'room deleted '
 
     def load_people(self, filename):
         """loads people from a txt file to the app"""
