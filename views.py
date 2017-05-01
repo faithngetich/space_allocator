@@ -55,7 +55,7 @@ class Amity(object):
                     self.living_space_allocations[living_space.room_name] = []
                     print(Fore.GREEN + "Living space {} successfully created.".format(living_space.room_name.upper()))
                 else:
-                    print(Fore."please specify the room_type you would like to create.")
+                    print(Fore.YELLOW + "please specify the room_type you would like to create.")
 
     def generate_random_office_spaces(self):
         """Generates random office"""
@@ -177,8 +177,7 @@ class Amity(object):
             return result
         else:
             return "Person not allocated to room"
-
-                
+        
     def reallocate_person(self, person_id, new_room_name):
         """ moves person from one room to another room"""
         # gets person object from person id
@@ -216,10 +215,61 @@ class Amity(object):
                         # remove from current office
                         self.office_allocations[current_room].remove(person_object)
                         # append to new room
-                        self.office_allocations[new_room_object.room_name].append(person_object)
-                        print(Fore.GREEN + "{} {} has been reallocated from office {} to {}".format(person_object.first_name,person_object.last_name, current_room,new_room_object))
-                        return "Has been reallocated from  office"
-                            
+                        if len(self.office_allocations[new_room_object.room_name]) < 6:
+                            self.office_allocations[new_room_object.room_name].append(person_object)
+                            print(Fore.GREEN + "{} {} has been reallocated from office {} to {}".format(person_object.first_name,person_object.last_name, current_room,new_room_object))
+                            return "Has been reallocated from  office"
+                        else:
+                            print(Fore.YELLOW + "Sorry!, the room is full")
+
+    def delete_employee(self, person_id):
+        person_object = self.get_person(person_id)
+        if person_object == "Invalid person id":
+            # prints id does not exist
+            print(person_object)
+            return person_object
+        for person_object in self.all_fellows:
+            if person_object in self.all_fellows:
+                self.all_fellows.remove(person_object)
+                print("{} {} deleted".format(person_object.first_name,person_object.last_name))
+
+                # delete name name if name exists 
+                if person_object in self.office_spaces_waiting_list:
+                    self.office_spaces_waiting_list.remove(person_object)
+                    print(Fore.GREEN + "{} deleted from unallocated space".format(person_object.first_name,person_object.last_name))
+                    return "deleted from unallocated space"
+                elif person_object in self.office_allocations:
+                    self.office_allocations[name].remove(person_object)
+                    # self.office[name].occupants.remove(full_name)
+                    print(Fore.GREEN + "{} deleted from office space".format(person_object.first_name,person_object.last_name))
+
+            if person_object in self.all_fellows:
+                if person_object in self.living_space_allocations:
+                    self.all_fellows.remove(person_object)
+                    # delete name name if name exists else return none
+                    self.living_space_allocations[person_object].occupants.remove(person_object)
+                    self.all_fellows.remove(person_object)
+                    print(Fore.GREEN +"{} {} deleted from living space".format(fperson_object.first_name,person_object.last_name))
+                    return "deleted from living_space"
+                if person_object in self.living_spaces_waiting_list:
+                    self.living_spaces_waiting_list.remove(person_object)
+                    print(Fore.GREEN +"{} {} deleted from unallocated living space".format.first_name,person_object.last_name)
+
+            print(Fore.GREEN + "{} {} has been deleted from Amity".format(person_object.first_name,person_object.last_name))
+            return "fellow deleted"
+        for person_object in self.all_staff:
+            if person_object in self.all_staff:
+                if person_object in self.office_spaces_waiting_list:
+                    self.staff.remove(person_object)
+                    # delete name name if name exists else return none
+                    self.office_spaces_waiting_list.pop(person_object)
+                if person_object in self.office:
+                    self.office_allocations[person_object].occupants.remove(person_object)
+            print(Fore.GREEN + "{} {} has been deleted from the system".format(person_object.first_name,person_object.last_name))
+
+            return "staff deleted"
+
+
     def load_people(self, filename):
         """loads people from a txt file to the app"""
         try:
@@ -242,14 +292,14 @@ class Amity(object):
             if room != "None":
                 print ("\n" +Fore.BLUE + room.upper())
                 for person in self.office_allocations[room]:
-                    print(person)
+                    print(person.person_id, person)
                     
         print(Fore.MAGENTA + "=" * 30 + "\n" + "Living spaces Allocations\n" + "=" *30)
         for room in self.living_space_allocations.keys():
             if room != "None":
                 print ("\n" + Fore.BLUE +room.upper() )
                 for person in self.living_space_allocations[room]:
-                    print(person)
+                    print(person.person_id, person )
 
         if file_name:
             nfile = open(file_name + ".txt", "a")
@@ -266,6 +316,8 @@ class Amity(object):
             print("{}.txt has been written".format(file_name))
             return "Successfully written the file"
         return "office allocations printed successfully"
+
+    
     
     def print_unallocated(self, file_name=None):
         """Prints all people not allocated"""
@@ -295,7 +347,7 @@ class Amity(object):
         offices = [room for room in self.office_allocations if room != "None"]
         living_spaces = [room for room in self.living_space_allocations if room != "None"]
         if not offices or not living_spaces:
-            print("There are no rooms existing in the system.")
+            print(Fore.YELLOW + "There are no rooms existing in the system.")
         else:
             if room_name not in offices and room_name not in living_spaces:
                 print(Fore.RED + "sorry! the room does not exist")
