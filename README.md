@@ -1,12 +1,11 @@
 # space_allocator
-Amity Checkpoint one
-Room Space Allocation
+**Amity Checkpoint one**
 
 Space allocation system for amity Facility.
 
 Amity has rooms which can be offices or living Spaces. These rooms are allocated to people in the amity facility and these people can either be Staff or Fellows. Only a Fellow can be given a living Space on top of office space.
 
-Installation.
+**Installation.**
 
 clone the Repo into a folder of your choice
 
@@ -47,9 +46,9 @@ Run `delete_employee <person_id>` to delete an employee
 
 Run `print_allocations` to print a list of people and the rooms they have been allocated to
 
-#Testing.
+**Testing.**
 
 nosetests
-Credits.
+**Credits.**
 
 Faith
