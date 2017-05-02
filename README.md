@@ -46,7 +46,7 @@ Run `delete_employee <person_id>` to delete an employee
 
 Run `print_allocations` to print a list of people and the rooms they have been allocated to
 
-**Testing.**
+# Testing.
 
 nosetests
 **Credits.**
