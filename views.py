@@ -272,6 +272,7 @@ class Amity(object):
             return "employee deleted"
 
     def delete_rooms(self, room_name):
+        room_name = room_name.upper()
         room_object = self.get_room(room_name)
         if room_object == "Room does not exist":
            print("Room does not exist")
@@ -393,13 +394,11 @@ class Amity(object):
             for room in rooms:
                 self.create_room(room.room_type[0],[room.name])
             for person in people:
-                self.add_person(person.first_name, person.last_name, person.category, person.wants_accomodation)
+                self.add_person(person.first_name, person.last_name, person.category[0], 'Y' if person.wants_accomodation else 'N')
             print(Fore.GREEN + "Data from {} loaded to the app.".format(db_name))
             return "Successfully loaded people to the app"
         else:
             print(Fore.RED + "sorry db does not exist")
-            
-        
 
     def save_state(self, db_name):
         """Persists app data into the given db"""

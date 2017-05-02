@@ -10,6 +10,7 @@ Usage:
     amity print_room <room_name>
     amity print_unallocated [-output=<filename>]
     amity load_people <filename>
+    amity delete_rooms(args['<room_name>'])
     amity save_state (--database=<sqlite_database>)
     amity load_state
     amity (-i | --interactive)
