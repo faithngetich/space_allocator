@@ -49,6 +49,6 @@ Run `print_allocations` to print a list of people and the rooms they have been a
 # Testing.
 
 nosetests
-**Credits.**
+# Credits.
 
 Faith
