@@ -61,9 +61,7 @@ def intro():
            'blue', attrs=['bold'])
     print("Welcome to Amity! Here is a list of commands to get you started." +
           " Type 'help' anytime to access documented commands")
-    print("\n\n\n\n\n")
-    # print(amity)
-    # print(amity.__dict__)
+    print("\n\n")
     cprint(__doc__, 'magenta')
 
 
@@ -80,6 +78,7 @@ class AmitySystem(cmd.Cmd):
         else:
             room_type = "L"
         amity.create_room(room_type, args["<room_name>"])
+       
         
     @docopt_cmd
     def do_add_person(self, args):
@@ -105,13 +104,13 @@ class AmitySystem(cmd.Cmd):
                                      args['<new_room>']))
 
     @docopt_cmd
-    def save_state(self, args):
+    def do_save_state(self, args):
         """Persists app data into the given db
         Usage: save_state (--db_name=sqlite_db)
         """
         db = args['--db_name']
         amity.save_state(db)
-        
+       
     @docopt_cmd
     def do_print_unallocated(self, args):
         """Usage: print_unallocated [--file=text_file]"""
@@ -140,6 +139,7 @@ class AmitySystem(cmd.Cmd):
         """Usage: delete_room <room_name>"""
         amity.delete_rooms(args['<room_name>'])
 
+
     @docopt_cmd
     def do_load_state(self, arg):
         """
@@ -152,6 +152,7 @@ class AmitySystem(cmd.Cmd):
     def do_load_people(self, args):
         """Usage: load_state <text_file>"""
         amity.load_people(args["<text_file>"])
+    
     
     @docopt_cmd
     def do_print_room(self, args):
@@ -170,12 +171,15 @@ class AmitySystem(cmd.Cmd):
         """Usage: load_state <text_file>"""
         amity.load_people(args["<text_file>"])
 
+
+
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
         print('Thank you for using Amity. Adios!')
         exit()
 
+   
 opt = docopt(__doc__, sys.argv[1:])
 
 if opt['--interactive']:
