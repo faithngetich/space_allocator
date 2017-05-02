@@ -22,7 +22,7 @@ Install the packages.
 Launching the Program.
 
 `python app.py`
-Running.
+# Running.
 
 Run `create_room (O|L) <room_name>` to create a new room.
 
