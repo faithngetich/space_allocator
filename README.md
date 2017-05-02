@@ -14,12 +14,15 @@ clone the Repo into a folder of your choice
 Create a virtual enviroment.
 
 `mkvirtualenv amity`
+
 Navigate to the root folder.
 
 `cd office-space-allocation`
+
 Install the packages.
 
 `pip install -r requirements.txt`
+
 Launching the Program.
 
 `python app.py`
