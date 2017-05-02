@@ -9,13 +9,14 @@ Amity has rooms which can be offices or living Spaces. These rooms are allocated
 
 clone the Repo into a folder of your choice
 
-git clone https://github.com/faithngetich/space_allocator
+`git clone https://github.com/faithngetich/space_allocator`
+
 Create a virtual enviroment.
 
-virtualenv amity
+`mkvirtualenv amity`
 Navigate to the root folder.
 
-cd office-space-allocation
+`cd office-space-allocation`
 Install the packages.
 
 `pip install -r requirements.txt`
